@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
-import { CSSTransition } from 'react-transition-group'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
@@ -44,8 +43,9 @@ const TodoList: React.FC<{}> = () => {
             content={todo.content}
             done={todo.done}
             setDone={(done) => {
-              todos[index].done=done
-              setTodos(todos)
+              let new_todos=[...todos]
+              new_todos[index].done=done
+              setTodos(new_todos)
             }}
           />
         ))
@@ -136,15 +136,7 @@ interface TodoItemArgs {
   setDone: (done: boolean) => void
 }
 
-const TodoItem: React.FC<TodoItemArgs> = ({ title , content }) => {
-  const key=JSON.stringify({"title":title,"content":content})
-  const [done, setDone] = useState(()=>{
-    const saved=JSON.parse(localStorage.getItem(key) ?? "false")
-    return saved || false;
-  });
-  useEffect(()=>{
-    localStorage.setItem(key,JSON.stringify(done))
-  })
+const TodoItem: React.FC<TodoItemArgs> = ({ title , content, done, setDone }) => {
   
   return (
     <>
